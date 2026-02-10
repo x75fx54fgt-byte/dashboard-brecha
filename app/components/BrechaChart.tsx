@@ -1,17 +1,15 @@
 "use client";
 
-import { useMemo } from "react";
 import {
   Chart as ChartJS,
   LineElement,
   PointElement,
   LinearScale,
-  TimeScale,
   Tooltip,
   Legend,
-  Filler,
+  TimeScale,
+  ChartData,
 } from "chart.js";
-import "chartjs-adapter-date-fns";
 import { Line } from "react-chartjs-2";
 
 ChartJS.register(
@@ -20,29 +18,13 @@ ChartJS.register(
   LinearScale,
   TimeScale,
   Tooltip,
-  Legend,
-  Filler
+  Legend
 );
 
-type InputPoint =
-  | { t: number; y: number }
-  | { t: number; v: number };
+type Point = { x: number; y: number };
 
-export default function BrechaChart({ data }: { data: InputPoint[] }) {
-  const points = useMemo(() => {
-    return data
-      .map((p: any) => ({
-        x: p.t,
-        y: typeof p.y === "number" ? p.y : p.v,
-      }))
-      .filter(
-        (p) => typeof p.x === "number" && typeof p.y === "number"
-      );
-  }, [data]);
-
-  const yValues = points.map((p) => p.y);
-
-  const chartData = {
+export default function BrechaChart({ points }: { points: Point[] }) {
+  const chartData: ChartData<"line", Point[]> = {
     datasets: [
       {
         label: "Brecha %",
@@ -61,39 +43,6 @@ export default function BrechaChart({ data }: { data: InputPoint[] }) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    scales: {
-      x: {
-        type: "time" as const,
-        time: {
-          unit: "minute",
-          tooltipFormat: "HH:mm:ss",
-        },
-        title: {
-          display: true,
-          text: "Tiempo",
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: "Brecha (%)",
-        },
-        beginAtZero: false,
-        suggestedMin: Math.min(...yValues) - 1,
-        suggestedMax: Math.max(...yValues) + 1,
-      },
-    },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (ctx: any) =>
-            `Brecha: ${ctx.parsed.y.toFixed(2)} %`,
-        },
-      },
-      legend: {
-        display: true,
-      },
-    },
   };
 
   return (
