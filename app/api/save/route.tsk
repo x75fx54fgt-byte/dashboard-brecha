@@ -1,0 +1,17 @@
+import { NextResponse } from "next/server";
+import { dbPromise } from "@/app/lib/db";
+
+export async function POST(req: Request) {
+  const body = await req.json();
+  const { bcv, binance, brecha } = body;
+
+  const db = await dbPromise;
+
+  await db.run(
+    `INSERT INTO rates (bcv, binance, brecha, created_at)
+     VALUES (?, ?, ?, ?)`,
+    [bcv, binance, brecha, new Date().toISOString()]
+  );
+
+  return NextResponse.json({ ok: true });
+}
