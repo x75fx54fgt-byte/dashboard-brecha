@@ -172,7 +172,7 @@ export default function Home() {
     <>
       <main style={{ padding: 24, fontFamily: "Arial", maxWidth: 1100, margin: "0 auto" }}>
         <h1>Dashboard Brecha ✅</h1>
-        <p style={{ color: "#777" }}>Histórico persistente en SQLite.</p>
+        <p style={{ color: "#777" }}></p>
         
         {/* USD */}
         <h3>USD</h3>
