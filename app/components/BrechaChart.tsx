@@ -47,7 +47,6 @@ export default function BrechaChart({ data }: { data: InputPoint[] }) {
       {
         label: "Brecha %",
         data: points,
-        parsing: false,
         borderColor: "#22c55e",
         backgroundColor: "transparent",
         fill: true,
