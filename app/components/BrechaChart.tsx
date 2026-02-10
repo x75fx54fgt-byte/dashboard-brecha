@@ -1,5 +1,7 @@
 "use client";
 
+import type { ChartData, ChartDataset } from "chart.js";
+
 import {
   Chart as ChartJS,
   LineElement,
@@ -8,8 +10,8 @@ import {
   Tooltip,
   Legend,
   TimeScale,
-  ChartData,
 } from "chart.js";
+
 import { Line } from "react-chartjs-2";
 
 ChartJS.register(
@@ -36,7 +38,7 @@ export default function BrechaChart({ points }: { points: Point[] }) {
         pointRadius: 5,
         pointHoverRadius: 7,
         borderWidth: 2,
-      },
+      } satisfies ChartDataset<"line", Point[]>,
     ],
   };
 

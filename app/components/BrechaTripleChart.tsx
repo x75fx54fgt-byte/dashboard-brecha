@@ -1,5 +1,6 @@
 "use client";
 
+import type { ChartOptions, ChartData } from "chart.js";
 import { useEffect, useRef } from "react";
 import {
   Chart as ChartJS,
@@ -58,7 +59,7 @@ export default function BrechaTripleChart({ data }: { data: Row[] }) {
     )
     .sort((a, b) => a.t - b.t);
 
-  const chartData = {
+  const chartData: ChartData<"line"> = {
     datasets: [
       {
         label: "BCV (Bs)",
@@ -88,42 +89,45 @@ export default function BrechaTripleChart({ data }: { data: Row[] }) {
       },
     ],
   };
-
-  const options = {
+  const options: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
+
     interaction: {
-      mode: "index" as const,
+      mode: "index",
       intersect: false,
     },
+
     scales: {
       x: {
-        type: "time" as const,
+        type: "time",
         time: { tooltipFormat: "HH:mm:ss" },
         title: { display: true, text: "Tiempo" },
       },
       y: {
-        position: "left" as const,
+        position: "left",
         title: { display: true, text: "Bs" },
       },
       y1: {
-        position: "right" as const,
-        grid: { drawOnChartArea: false },
-        title: { display: true, text: "Brecha %" },
+         position: "right",
+         grid: { drawOnChartArea: false },
+         title: { display: true, text: "Brecha %" },
       },
     },
+
     plugins: {
       legend: { display: true },
+
       zoom: {
         pan: {
           enabled: true,
-          mode: "x",
+          mode: "x" as const,     // ✅ CLAVE
           modifierKey: "ctrl",
         },
         zoom: {
           wheel: { enabled: true },
           pinch: { enabled: true },
-          mode: "x",
+          mode: "x" as const,     // ✅ CLAVE
         },
       },
     },
