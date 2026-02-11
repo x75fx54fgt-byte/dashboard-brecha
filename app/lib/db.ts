@@ -1,18 +1,24 @@
 import Database from "better-sqlite3";
 import path from "path";
 
-const dbPath = path.join(process.cwd(), "data.sqlite");
+let _db: Database.Database | null = null;
 
-export const db = new Database(dbPath);
+export function getDB() {
+  if (_db) return _db;
 
-// crear tabla UNA sola vez
-db.prepare(`
-  CREATE TABLE IF NOT EXISTS rates (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    currency TEXT NOT NULL,
-    bcv REAL NOT NULL,
-    binance REAL NOT NULL,
-    brecha REAL NOT NULL,
-    created_at TEXT NOT NULL
-  )
-`).run();
+  const dbPath = path.join(process.cwd(), "data.sqlite");
+  _db = new Database(dbPath);
+
+  _db.prepare(`
+    CREATE TABLE IF NOT EXISTS rates (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      currency TEXT NOT NULL,
+      bcv REAL NOT NULL,
+      binance REAL NOT NULL,
+      brecha REAL NOT NULL,
+      created_at TEXT NOT NULL
+    )
+  `).run();
+
+  return _db;
+}

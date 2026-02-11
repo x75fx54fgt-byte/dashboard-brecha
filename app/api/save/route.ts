@@ -5,6 +5,8 @@ import { getDB } from "@/app/lib/db";
 
 export async function POST(req: Request) {
   try {
+    const db = getDB();
+
     const { currency, bcv, binance } = await req.json();
 
     if (!currency || typeof bcv !== "number" || typeof binance !== "number") {

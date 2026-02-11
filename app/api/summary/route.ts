@@ -1,7 +1,7 @@
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { db } from "@/app/lib/db";
+import { getDB } from "@/app/lib/db";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -14,6 +14,8 @@ export async function GET(req: Request) {
   const from = new Date(Date.now() - minutes * 60_000).toISOString();
 
   try {
+    const db = getDB();
+
     const row = db.prepare(`
       SELECT
         AVG(bcv)      AS avg_bcv,

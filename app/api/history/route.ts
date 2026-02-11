@@ -1,9 +1,11 @@
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { db } from "@/app/lib/db";
+import { getDB } from "@/app/lib/db";
 
 export async function GET(req: Request) {
+  const db = getDB();
+
   const { searchParams } = new URL(req.url);
 
   const currency = searchParams.get("currency") ?? "USD";

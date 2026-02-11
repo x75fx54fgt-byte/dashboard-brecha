@@ -1,10 +1,12 @@
 export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
-import { db } from "@/app/lib/db";
+import { getDB } from "@/app/lib/db";
 
 export async function GET() {
   try {
+    const db = getDB(); 
+
     const bcv = 36.5;
     const binance = 38.2;
 
